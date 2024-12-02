@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 
 namespace AdventOfCode
 {
@@ -10,7 +10,7 @@ namespace AdventOfCode
         static async Task Main(string[] args)
         {
             using HttpClient client = new HttpClient();
-            var url = ConfigurationManager.AppSettings["adventOfCodeURL"];
+            
             url += "1/input";
 
             try
@@ -27,4 +27,5 @@ namespace AdventOfCode
 
 
     }
+
 }
