@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode
 {
-    internal class Class1
+    internal class ApiHelper
     {
     }
 }
