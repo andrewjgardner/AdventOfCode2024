@@ -3,6 +3,11 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AdventOfCode.Interfaces;
+using AdventOfCode.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 
 
 namespace AdventOfCode
@@ -10,45 +15,34 @@ namespace AdventOfCode
     internal class Program
     {
        
-
-        static async Task Main(string[] args)
+        static Task Main(string[] args)
         {
-            configHelper = new ConfigHelper();
+            var httpClient = new HttpClient();
+            var host = Host.CreateApplicationBuilder(args);
+            host.Services.TryAddSingleton<IConfigService, ConfigService>();
+            host.Services.TryAddSingleton<IAdventApiService, AdventApiService>();
+            
 
-            CreateAppDataSubDirectory("AdventOfCode");
+            /*
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.json", true, true);
 
-
-            url += "1/input";
-
-            using HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "AdventOfCode2024 by github.com/andrewjgardner");
-            client.DefaultRequestHeaders.Add("Cookie", config["Cookie"]);
-
-            try
-            {
-                var response = await client.GetAsync(url);
-
-                Console.Write(response);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            var config = builder.Build();
+            */
+            
+            // CreateAppDataSubDirectory(config["ConfigDir"]);
+            return Task.CompletedTask;
         }
 
-        private static bool CreateAppDataSubDirectory(string name)
+        private static bool CreateAppDataSubDirectory(string? name)
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string appDirectory = Path.Combine(appDataPath, name);
-            if (!Directory.Exists(appDirectory))
-            {
-                Directory.CreateDirectory(appDirectory);
-                Console.WriteLine($"Created directory: {appDirectory}");
-                return true;
-            }
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var appDirectory = Path.Combine(appDataPath, name);
+            if (Directory.Exists(appDirectory)) return false;
+            Directory.CreateDirectory(appDirectory);
+            Console.WriteLine($"Created directory: {appDirectory}");
+            return true;
 
-            return false;
         }
 
         private static async Task RetrieveTestInput()
