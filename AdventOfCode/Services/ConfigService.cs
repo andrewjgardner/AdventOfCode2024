@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AdventOfCode.Services;
 
-internal class ConfigService
+public class ConfigService
     :IConfigService
 {
     private readonly IConfigurationRoot? _config;

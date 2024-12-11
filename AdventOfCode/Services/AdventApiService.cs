@@ -10,14 +10,15 @@ namespace AdventOfCode.Services;
 
 public class AdventApiService : IAdventApiService
 {
+
     private HttpClient _client;
     private readonly IConfigService _configService;
 
     public AdventApiService(IConfigService configService, HttpClient client)
     {
-        _configService = configService;
         _client = client;
-        
+        _configService = configService;
+
         _client.DefaultRequestHeaders.Add("User-Agent", _configService.GetConfigItem("UserAgentText"));
         _client.DefaultRequestHeaders.Add("Cookie", _configService.GetConfigItem("Cookie"));
     }
